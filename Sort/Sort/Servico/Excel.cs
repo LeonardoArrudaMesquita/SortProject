@@ -12,27 +12,28 @@ namespace Sort.Servico
 {
     public class Excel
     {
+        Ex.Application oApp;
+        Ex._Workbook oBook;
+        Ex._Worksheet oSheet;
+
         public void GerarExcel()
         {
-            try
-            {
-                String excelPath = @"C:\SI\Excel\APS.xlsx";
+            String excelPath = @"C:\SI\Excel\APS.xlsx";           
 
+            // Inicializando Excel App Object           
+            oApp = new Ex.Application();
+            oApp.Visible = true;
+
+            oBook = (Ex._Workbook)oApp.Workbooks.Add(Missing.Value);
+            oSheet = (Ex._Worksheet)oBook.ActiveSheet;
+            oSheet.Name = "Tempo";
+
+            try
+            {                
                 if (File.Exists(excelPath))
                 {
                     File.Delete(excelPath);
-                }
-
-                Ex.Application oApp;
-                Ex._Workbook oBook;
-                Ex._Worksheet oSheet;                
-
-                // Inicializando Excel App Object           
-                oApp = new Ex.Application();
-                oApp.Visible = true;
-                
-                oBook = (Ex._Workbook)oApp.Workbooks.Add(Missing.Value);
-                oSheet = (Ex._Worksheet)oBook.ActiveSheet;
+                }              
 
                 // Dividindo os ranges da planilha
                 Ex.Range planilha = oSheet.get_Range("A1", "J7");
@@ -68,15 +69,53 @@ namespace Sort.Servico
 
                 // Estilizando a borda
                 Ex.Borders borda = planilha.Borders;
-                borda.LineStyle = Ex.XlLineStyle.xlContinuous;                   
+                borda.LineStyle = Ex.XlLineStyle.xlContinuous;
+
+                GerarGraficoExcel("B2", "J2", "5", 10, 30, 300, 300); // Tam. 5
+                GerarGraficoExcel("B3", "J3", "10", 10, 30, 300, 300); // Tam. 10
+                GerarGraficoExcel("B4", "J4", "50", 10, 30, 300, 300); // Tam. 50
+                GerarGraficoExcel("B5", "J5", "100", 10, 30, 300, 300); // Tam. 100
+                GerarGraficoExcel("B6", "J6", "1000", 10, 30, 300, 300); // Tam. 1000
+                GerarGraficoExcel("B7", "J7", "10000", 10, 30, 300, 300); // Tam. 10000
 
                 // Fechando e salvando o arquivo
                 oBook.Close(true, excelPath, null);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR: " + ex.Message);                
+                Console.WriteLine("ERROR: " + ex.Message);
+                oBook.Close(true, excelPath, null);
             }
+        }
+
+        public void PopulaPlanilha()
+        {
+
+        }
+
+        public void GerarGraficoExcel(String c1, String c2, String tam, double left, double top, double width, double height)
+        {
+            // Cria uma nova planilha
+            var worksheet = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
+            worksheet.Name = "Gráfico";
+            
+            // Cria um Chart(Gráfico)
+            Ex.ChartObjects cb = (Ex.ChartObjects)worksheet.ChartObjects(Type.Missing);
+            Ex.ChartObject cbc = (Ex.ChartObject)cb.Add(left, top, width, height);
+            Ex.Chart cp = cbc.Chart;
+
+            Ex.Range valores = oSheet.get_Range(c1, c2);
+
+            // Seta os nomes das colunas
+            Ex.SeriesCollection seriesCollection = cp.SeriesCollection();
+            Ex.Series series = seriesCollection.NewSeries();
+            series.XValues = oSheet.get_Range("B1", "J1");
+
+            // Popula o Gráfico
+            cp.SetSourceData(valores, Missing.Value);
+                                   
+            cp.ChartType = Ex.XlChartType.xlColumnClustered;
+                        
         }
     }
 }
