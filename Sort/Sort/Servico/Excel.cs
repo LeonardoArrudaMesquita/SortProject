@@ -15,6 +15,7 @@ namespace Sort.Servico
         Ex.Application oApp;
         Ex._Workbook oBook;
         Ex._Worksheet oSheet;
+        Ex._Worksheet oSheetChart;
 
         public void GerarExcel()
         {
@@ -43,9 +44,9 @@ namespace Sort.Servico
                 // Cabeçalho da planilha
                 oApp.Cells[1, 2] = "Bubble";
                 oApp.Cells[1, 3] = "Selection";
-                oApp.Cells[1, 4] = "Inserction";
-                oApp.Cells[1, 5] = "Merge";
-                oApp.Cells[1, 6] = "Heap";
+                oApp.Cells[1, 4] = "Insertion";
+                oApp.Cells[1, 5] = "Heap";
+                oApp.Cells[1, 6] = "Merge";
                 oApp.Cells[1, 7] = "Quick";
                 oApp.Cells[1, 8] = "Count";
                 oApp.Cells[1, 9] = "Bucket";
@@ -71,6 +72,10 @@ namespace Sort.Servico
                 Ex.Borders borda = planilha.Borders;
                 borda.LineStyle = Ex.XlLineStyle.xlContinuous;
 
+                // Cria uma nova planilha
+                oSheetChart = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
+                oSheetChart.Name = "Gráfico";
+
                 GerarGraficoExcel("B2", "J2", "5", 10, 30, 300, 300); // Tam. 5
                 GerarGraficoExcel("B3", "J3", "10", 10, 30, 300, 300); // Tam. 10
                 GerarGraficoExcel("B4", "J4", "50", 10, 30, 300, 300); // Tam. 50
@@ -95,27 +100,28 @@ namespace Sort.Servico
 
         public void GerarGraficoExcel(String c1, String c2, String tam, double left, double top, double width, double height)
         {
-            // Cria uma nova planilha
-            var worksheet = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
-            worksheet.Name = "Gráfico";
+           
             
             // Cria um Chart(Gráfico)
-            Ex.ChartObjects cb = (Ex.ChartObjects)worksheet.ChartObjects(Type.Missing);
+            Ex.ChartObjects cb = (Ex.ChartObjects)oSheetChart.ChartObjects(Type.Missing);
             Ex.ChartObject cbc = (Ex.ChartObject)cb.Add(left, top, width, height);
             Ex.Chart cp = cbc.Chart;
 
             Ex.Range valores = oSheet.get_Range(c1, c2);
+            
+            // Seta o título do gráfico
+            cp.HasTitle = true;
+            cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tam;            
 
             // Seta os nomes das colunas
             Ex.SeriesCollection seriesCollection = cp.SeriesCollection();
             Ex.Series series = seriesCollection.NewSeries();
+
+            series.Values = valores;
             series.XValues = oSheet.get_Range("B1", "J1");
 
             // Popula o Gráfico
-            cp.SetSourceData(valores, Missing.Value);
-                                   
-            cp.ChartType = Ex.XlChartType.xlColumnClustered;
-                        
+            cp.SetSourceData(valores, Ex.XlRowCol.xlRows);
         }
     }
 }
