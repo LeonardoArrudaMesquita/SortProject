@@ -9,7 +9,7 @@ namespace Sort.Servico
 {
     public class Vetor
     {
-        public List<Arrays> GerarVetores()
+        public List<Arrays> PopulaVetor()
         {
             var lstByte = new List<Arrays>();
             Random rd = new Random();
@@ -25,19 +25,12 @@ namespace Sort.Servico
                 Byte[] arrMil = new Byte[1000];
                 Byte[] arrDezMil = new Byte[10000];
 
-                rd.NextBytes(arrCinco);
-                rd.NextBytes(arrDez);
-                rd.NextBytes(arrCinquenta);
-                rd.NextBytes(arrCem);
-                rd.NextBytes(arrMil);
-                rd.NextBytes(arrDezMil);
-
-                valor.ArrCinco = arrCinco;
-                valor.ArrDez = arrDez;
-                valor.ArrCinquenta = arrCinquenta;
-                valor.ArrCem = arrCem;
-                valor.ArrMil = arrMil;
-                valor.ArrDezMil = arrDezMil;
+                rd.NextBytes(valor.ArrCinco);
+                rd.NextBytes(valor.ArrDez);
+                rd.NextBytes(valor.ArrCinquenta);
+                rd.NextBytes(valor.ArrCem);
+                rd.NextBytes(valor.ArrMil);
+                rd.NextBytes(valor.ArrDezMil);                
 
                 lstByte.Add(valor);
             }

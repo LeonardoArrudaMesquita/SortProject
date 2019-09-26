@@ -19,7 +19,7 @@ namespace Sort.Servico
 
         public void GerarExcel()
         {
-            String excelPath = @"C:\SI\Excel\APS.xlsx";           
+            String excelPath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "//Excel//");
 
             // Inicializando Excel App Object           
             oApp = new Ex.Application();
@@ -77,11 +77,11 @@ namespace Sort.Servico
                 oSheetChart.Name = "Gráfico";
 
                 GerarGraficoExcel("B2", "J2", "5", 10, 30, 300, 300); // Tam. 5
-                GerarGraficoExcel("B3", "J3", "10", 10, 30, 300, 300); // Tam. 10
-                GerarGraficoExcel("B4", "J4", "50", 10, 30, 300, 300); // Tam. 50
-                GerarGraficoExcel("B5", "J5", "100", 10, 30, 300, 300); // Tam. 100
-                GerarGraficoExcel("B6", "J6", "1000", 10, 30, 300, 300); // Tam. 1000
-                GerarGraficoExcel("B7", "J7", "10000", 10, 30, 300, 300); // Tam. 10000
+                GerarGraficoExcel("B3", "J3", "10", 320, 30, 300, 300); // Tam. 10
+                GerarGraficoExcel("B4", "J4", "50", 630, 30, 300, 300); // Tam. 50
+                GerarGraficoExcel("B5", "J5", "100", 10, 340, 300, 300); // Tam. 100
+                GerarGraficoExcel("B6", "J6", "1000", 320, 340, 300, 300); // Tam. 1000
+                GerarGraficoExcel("B7", "J7", "10000", 630, 340, 300, 300); // Tam. 10000
 
                 // Fechando e salvando o arquivo
                 oBook.Close(true, excelPath, null);
@@ -100,8 +100,7 @@ namespace Sort.Servico
 
         public void GerarGraficoExcel(String c1, String c2, String tam, double left, double top, double width, double height)
         {
-           
-            
+                       
             // Cria um Chart(Gráfico)
             Ex.ChartObjects cb = (Ex.ChartObjects)oSheetChart.ChartObjects(Type.Missing);
             Ex.ChartObject cbc = (Ex.ChartObject)cb.Add(left, top, width, height);
