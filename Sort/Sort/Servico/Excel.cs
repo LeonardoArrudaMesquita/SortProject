@@ -19,7 +19,8 @@ namespace Sort.Servico
 
         public void GerarExcel()
         {
-            String excelPath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "//Excel//");
+            // Pega a pasta Raiz e concatena com o arquivo .xlsx
+            String excelPath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "Excel\\APS.xlsx");
 
             // Inicializando Excel App Object           
             oApp = new Ex.Application();
