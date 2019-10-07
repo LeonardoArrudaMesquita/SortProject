@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,25 +16,25 @@ namespace Sort
         {
             Vetor vt = new Vetor();
             var sort = new Sorties();
-            Stopwatch sw = new Stopwatch();
 
             //var ge = new Excel();
             //ge.GerarExcel();
 
             var vetores = vt.PopulaVetor();
 
-            foreach (var item in vetores)
+            foreach (var vetor in vetores)
             {
-                sw.Start();
+                using (var temporizardor = new Cronometro())
+                {
+                    foreach (PropertyInfo atributo in vetor.GetType().GetProperties())
+                    {
+                        var valorProp = atributo.GetValue(vetor, null);
 
-                sort.SelectionSort(item.ArrCinco);
-                sort.InsertionSort(item.ArrCinco);
-                sort.BubbleSort(item.ArrCinco);
-
-                sw.Stop();
-
-                item.MediaMiliSeg = sw.Elapsed.TotalMilliseconds;
-                item.MediaNanoSeg = sw.Elapsed.TotalMilliseconds * 1000000;
+                        sort.SelectionSort((Byte[])valorProp);
+                        sort.InsertionSort((Byte[])valorProp);
+                        sort.BubbleSort((Byte[])valorProp);
+                    }                    
+                }
             }
 
             Console.WriteLine("Programa Executado com Sucesso !");

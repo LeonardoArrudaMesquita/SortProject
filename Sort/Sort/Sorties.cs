@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,13 @@ namespace Sort
 {
     public class Sorties
     {
+        private Stopwatch sw;
+
+        public Sorties()
+        {
+            sw = new Stopwatch();
+        }
+
         public void Swap(Byte[] vetor, int a, int b)
         {
             byte aux = vetor[a];
@@ -17,6 +25,8 @@ namespace Sort
 
         public void BubbleSort(Byte[] vetor)
         {
+            sw.Start();
+
             for (int i = 0; i < vetor.Length; i++)
             {
                 for (int j = 0; j < vetor.Length - (1 + i); j++)
@@ -27,6 +37,8 @@ namespace Sort
                     }
                 }
             }
+
+            sw.Stop();
         }        
 
         public void InsertionSort(Byte[] vetor)
@@ -42,6 +54,8 @@ namespace Sort
 
         public void SelectionSort(Byte[] vetor)
         {
+
+
             for (int i = 0, menor = 0; i < vetor.Length - 1; i++, menor = i)
             {                
                 for (int j = i + 1; j < vetor.Length; j++)
