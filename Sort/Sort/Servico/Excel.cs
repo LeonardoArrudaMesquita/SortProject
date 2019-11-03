@@ -94,12 +94,12 @@ namespace Sort.Servico
             }
         }
 
-        public void PopulaPlanilha()
+        public void PopularPlanilha()
         {
-
+                        
         }
 
-        public void GerarGraficoExcel(String c1, String c2, String tam, double left, double top, double width, double height)
+        public void GerarGraficoExcel(String c1, String c2, String tamanho, double left, double top, double width, double height)
         {
                        
             // Cria um Chart(Gráfico)
@@ -111,7 +111,7 @@ namespace Sort.Servico
             
             // Seta o título do gráfico
             cp.HasTitle = true;
-            cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tam;            
+            cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tamanho;
 
             // Seta os nomes das colunas
             Ex.SeriesCollection seriesCollection = cp.SeriesCollection();

@@ -1,7 +1,6 @@
 ﻿using Sort.Servico;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,28 +13,22 @@ namespace Sort
     {
         static void Main(string[] args)
         {
-            Vetor vt = new Vetor();
-            var sort = new Sorties();
+            Vetor GerenciadorVetor = new Vetor();                                    
+            var vetores = GerenciadorVetor.PopularVetor();
 
-            //var ge = new Excel();
-            //ge.GerarExcel();
+            SortProcesssador sp = new SortProcesssador();
 
-            var vetores = vt.PopulaVetor();
-
-            foreach (var vetor in vetores)
-            {
-                using (var temporizardor = new Cronometro())
+            // Percorre cada item da List
+            foreach (var ItemLista in vetores)
+            {                
+                // Percorre as propriedades dos objetos Arrays da List
+                foreach (PropertyInfo atributo in ItemLista.GetType().GetProperties())
                 {
-                    foreach (PropertyInfo atributo in vetor.GetType().GetProperties())
-                    {
-                        var valorProp = atributo.GetValue(vetor, null);
-
-                        sort.SelectionSort((Byte[])valorProp);
-                        sort.InsertionSort((Byte[])valorProp);
-                        sort.BubbleSort((Byte[])valorProp);
-                    }                    
+                    sp.ObterTempoSort(atributo, ItemLista);                                        
                 }
             }
+
+            sp.CalcularMediaTempoQuery();
 
             Console.WriteLine("Programa Executado com Sucesso !");
             Console.ReadKey();

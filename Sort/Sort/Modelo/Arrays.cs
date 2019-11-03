@@ -15,7 +15,7 @@ namespace Sort.Modelo
             ArrCinquenta = new byte[50];
             ArrCem = new byte[100];
             ArrMil = new byte[1000];
-            ArrDezMil = new byte[1000];
+            ArrDezMil = new byte[10000];
         }       
 
         public byte[] ArrCinco { get; set; }

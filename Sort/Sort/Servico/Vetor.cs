@@ -9,7 +9,7 @@ namespace Sort.Servico
 {
     public class Vetor
     {
-        public List<Arrays> PopulaVetor()
+        public List<Arrays> PopularVetor()
         {
             var lstByte = new List<Arrays>();
             Random rd = new Random();
@@ -28,6 +28,15 @@ namespace Sort.Servico
                 lstByte.Add(valor);
             }
             return lstByte;
+        }
+
+        public Byte[] CopiarVetor(Byte[] vetor)
+        {
+            Byte[] aux = new Byte[vetor.Length];
+
+            vetor.CopyTo(aux, 0);
+
+            return aux;
         }
     }
 }
