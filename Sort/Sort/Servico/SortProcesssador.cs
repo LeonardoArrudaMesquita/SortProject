@@ -14,6 +14,7 @@ namespace Sort.Servico
         List<DadosExec> DadosExecList = new List<DadosExec>();        
         Vetor GerenciadorVetor = new Vetor();
 
+
         public void ObterTempoSort(PropertyInfo atributo, Arrays ItemLista)
         {
             Stopwatch stw = new Stopwatch();
@@ -80,17 +81,27 @@ namespace Sort.Servico
 
         public void CalcularMediaTempoQuery()
         {
-            //var media = DadosExecList.Select(x => x.TempoExec)
-            //    .Where(y => y.);
+            int[] TamanhosVetoresAux = { 5, 10, 50, 100, 1000, 10000 };
+            SortEnum[] NomesVetoresAux = {
+                                SortEnum.Bubble,
+                                SortEnum.Selection,
+                                SortEnum.Insertion,
+                                SortEnum.Heap,
+                                SortEnum.Merge,
+                                SortEnum.Quick,
+                                SortEnum.Count,
+                                SortEnum.Bucket,
+                                SortEnum.Radix };
 
-            //var teste = from values in DadosExecList
-            //             Where values.Tamanho == 0 && values.NomeSort == SortEnum.Bubble
-            //            select values.Tamanho;
-
-
-
-
-
+            foreach (var tamanho in TamanhosVetoresAux)                        
+            {
+                foreach (var nome in NomesVetoresAux)
+                {
+                    var media = (from values in DadosExecList
+                                 where values.Tamanho == tamanho && values.NomeSort == nome
+                                 select values.TempoExec).Sum() / 50;
+                }
+            }            
         }
     }
 }

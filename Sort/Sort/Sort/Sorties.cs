@@ -24,10 +24,8 @@ namespace Sort
         }
 
         public void BubbleSort(Byte[] vetor)
-        {
-            sw.Start();
-
-            for (int i = 0; i < vetor.Length; i++)
+        {            
+            for (int i = 0; i < vetor.Length - 1; i++)
             {
                 for (int j = 0; j < vetor.Length - (1 + i); j++)
                 {
@@ -36,9 +34,7 @@ namespace Sort
                         Swap(vetor, j, j + 1);                        
                     }
                 }
-            }
-
-            sw.Stop();
+            }            
         }        
 
         public void InsertionSort(Byte[] vetor)
