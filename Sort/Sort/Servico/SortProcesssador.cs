@@ -13,63 +13,92 @@ namespace Sort.Servico
     {
         List<DadosExec> DadosExecList = new List<DadosExec>();        
         Vetor GerenciadorVetor = new Vetor();
-
+        Stopwatch tempo = new Stopwatch();
+        Sorties sort = new Sorties();
 
         public void ObterTempoSort(PropertyInfo atributo, Arrays ItemLista)
-        {
-            Stopwatch stw = new Stopwatch();
-            var sort = new Sorties();
-            
+        {                        
             var vetor = (Byte[])atributo.GetValue(ItemLista, null);
 
             // BUBBLE SORT
 
-            stw.Start();
+            tempo.Start();
             sort.BubbleSort(GerenciadorVetor.CopiarVetor(vetor));
-            stw.Stop();
+            tempo.Stop();
 
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Bubble,
-                            (vetor.Length < 10000) ? stw.Elapsed.TotalMilliseconds * 1000000 : stw.Elapsed.TotalMilliseconds,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));           
 
-            stw.Reset();
+            tempo.Reset();
 
             // SELECTION SORT
 
-            stw.Start();
+            tempo.Start();
             sort.SelectionSort(GerenciadorVetor.CopiarVetor(vetor));
-            stw.Stop();
+            tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Selection,
-                            (vetor.Length < 10000) ? stw.Elapsed.TotalMilliseconds * 1000000 : stw.Elapsed.TotalMilliseconds,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
-            stw.Reset();
+            tempo.Reset();
 
             // INSERTION SORT
 
-            stw.Start();
+            tempo.Start();
             sort.InsertionSort(GerenciadorVetor.CopiarVetor(vetor));
-            stw.Stop();
+            tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Insertion,
-                            (vetor.Length < 10000) ? stw.Elapsed.TotalMilliseconds * 1000000 : stw.Elapsed.TotalMilliseconds,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
-            stw.Reset();
-
-            // HEAP SORT
-
-
+            tempo.Reset();
 
             // MERGE SORT
 
+            tempo.Start();
+            sort.MergeSort(GerenciadorVetor.CopiarVetor(vetor), 0, vetor.Length - 1);
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Merge,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
+
+            // HEAP SORT
+
+            tempo.Start();
+            sort.HeapSort(GerenciadorVetor.CopiarVetor(vetor));
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Heap,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
+
             // QUICK SORT
+
+            tempo.Start();
+            sort.QuickSort(GerenciadorVetor.CopiarVetor(vetor));
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Quick,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
 
             // COUNT SORT
 
