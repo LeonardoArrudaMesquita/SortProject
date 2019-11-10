@@ -16,7 +16,7 @@ namespace Sort
             Vetor GerenciadorVetor = new Vetor();                                    
             var vetores = GerenciadorVetor.PopularVetor();
 
-            SortProcesssador sp = new SortProcesssador();
+            SortProcessador sp = new SortProcessador();
 
             // Percorre cada item da List
             foreach (var ItemLista in vetores)

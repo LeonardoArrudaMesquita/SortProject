@@ -54,7 +54,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servico\Excel.cs" />
-    <Compile Include="Servico\SortProcesssador.cs" />
+    <Compile Include="Servico\SortProcessador.cs" />
     <Compile Include="Servico\Vetor.cs" />
     <Compile Include="Sort\SortEnum.cs" />
     <Compile Include="Sort\Sorties.cs" />

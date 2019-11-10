@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sort.Servico
 {
-    public class SortProcesssador
+    public class SortProcessador
     {
         List<DadosExec> DadosExecList = new List<DadosExec>();        
         Vetor GerenciadorVetor = new Vetor();
@@ -102,10 +102,42 @@ namespace Sort.Servico
 
             // COUNT SORT
 
+            tempo.Start();
+            sort.CountSort(GerenciadorVetor.CopiarVetor(vetor));
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Count,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
+
             // BUCKET SORT
+
+            tempo.Start();
+            sort.BucketSort(GerenciadorVetor.CopiarVetor(vetor));
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Bucket,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
 
             // RADIX SORT
 
+            tempo.Start();
+            sort.RadixSort(GerenciadorVetor.CopiarVetor(vetor));
+            tempo.Stop();
+            DadosExecList.Add(
+                    new DadosExec(
+                            SortEnum.Radix,
+                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            vetor.Length
+                        ));
+            tempo.Reset();
         }
 
         public void CalcularMediaTempoQuery()

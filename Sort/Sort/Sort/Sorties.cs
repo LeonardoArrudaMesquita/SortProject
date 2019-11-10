@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -112,7 +113,7 @@ namespace Sort
 
             // Joga o maior elemento para o final do vetor e arruma os heaps de novo
             for (int fim = vetor.Length - 1; fim > 0;)
-            {                
+            {
                 Swap(vetor, 0, fim);
                 ArrumaHeap(vetor, 0, --fim);
             }
@@ -124,7 +125,7 @@ namespace Sort
 
             for (int i = inicio; i >= 0; i--)
             {
-                ArrumaHeap(vetor, i, vetor.Length - 1);                
+                ArrumaHeap(vetor, i, vetor.Length - 1);
             }
         }
 
@@ -156,7 +157,7 @@ namespace Sort
                 {
                     Swap(vetor, pai, raiz);
                 }
-            }            
+            }
         }
 
         public void QuickSort(Byte[] vetor, int inicio, int fim)
@@ -176,33 +177,118 @@ namespace Sort
 
         private int Particionar(Byte[] vetor, int pivo, int fim)
         {
-            int j = fim;
+            int i, j;
 
             // Joga tudo que é maior que o pivô á direito e tudo que é menor a esquerda
-            for (int i = pivo + 1; i <= j;)
+            for (i = pivo + 1, j = fim; i <= j;)
             {
                 if (vetor[i] < vetor[pivo])
                 {
                     i++;
                 }
+                else if (vetor[j] > vetor[pivo])
+                {
+                    j--;
+                }
                 else
                 {
-                    if (vetor[j] > vetor[pivo])
-                    {
-                        j--;
-                    }
-                    else
-                    {
-                        Swap(vetor, i, j);
-                        i++;
-                        j--;
-                    }
+                    Swap(vetor, i, j);
+                    i++;
+                    j--;
                 }
             }
 
             // Joga o pivô para o meio
             Swap(vetor, pivo, j);
             return j;
+        }    
+
+    public void CountSort(Byte[] vetor)
+    {
+        int maior = EncontrarMaior(vetor);
+
+        Byte[] vetorContador = new Byte[maior + 1];
+
+        // Soma +1 para a quantidade de elementos encontrados naquele index
+        for (int i = 0; i < vetor.Length; i++)
+        {
+            vetorContador[vetor[i]] += 1;
+        }
+
+        // Pecorre o Vetor Contador
+        for (int i = 0, indiceAux = 0; i < vetorContador.Length; i++)
+        {
+            // Laço para inserção de elemento em vetor de saida de acordo com quantidade de vezes que o elemento aparece
+            while (vetorContador[i] > 0)
+            {
+                // Adiciona o elemento de forma ordenada no vetor
+                vetor[indiceAux] = (Byte)i;
+                indiceAux++;
+                vetorContador[i]--;
+            }
         }
     }
+
+    private int EncontrarMaior(Byte[] vetor)
+    {
+        int maior = vetor[0];
+
+        for (int i = 1; i < vetor.Length; i++)
+        {
+            if (maior < vetor[i])
+            {
+                maior = vetor[i];
+            }
+        }
+
+        return maior;
+    }
+
+    public void BucketSort(Byte[] vetor)
+    {
+        int maior = EncontrarMaior(vetor);
+
+        List<int>[] auxiliar = new List<int>[vetor.Length];
+
+        // Cria o bucket em cada índice para armazenar os números
+        for (int i = 0; i < auxiliar.Length; i++)
+        {
+            auxiliar[i] = new List<int>(vetor.Length);
+        }
+
+        int indice;
+
+        for (int i = 0; i < auxiliar.Length; i++)
+        {
+            indice = (vetor[i] * vetor.Length) / (maior + 1);
+
+            List<int> temporario = auxiliar[indice];
+            int contador = 0;
+
+            while (contador < temporario.Count && temporario.ElementAt(contador) < vetor[i])
+            {
+                contador++;
+            }
+
+            temporario.Insert(contador, vetor[i]);
+        }
+
+        indice = 0;
+
+        for (int i = 0; i < auxiliar.Length; i++)
+        {
+            // Any() verifica se tem algum registro na lista (isEmpty)
+            while (auxiliar[i].Any())
+            {
+                vetor[indice++] = (Byte)auxiliar[i].ElementAt(0);
+                auxiliar[i].RemoveAt(0);
+            }
+        }
+    }
+
+    public void RadixSort(Byte[] vetor)
+    {
+
+    }
+}
 }
