@@ -90,7 +90,7 @@ namespace Sort.Servico
             // QUICK SORT
 
             tempo.Start();
-            sort.QuickSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.QuickSort(GerenciadorVetor.CopiarVetor(vetor), 0, vetor.Length - 1);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(

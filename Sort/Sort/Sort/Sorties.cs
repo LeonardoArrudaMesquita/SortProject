@@ -161,7 +161,48 @@ namespace Sort
 
         public void QuickSort(Byte[] vetor, int inicio, int fim)
         {
+            if (inicio < fim)
+            {
+                // Retorna o meio do vetor e "divide" o vetor em dois
+                int meio = Particionar(vetor, inicio, fim);
 
+                // Particiona ordenando do inicio até meio - 1
+                QuickSort(vetor, inicio, meio - 1);
+
+                // Particiona ordenando do meio + 1 até o fim
+                QuickSort(vetor, meio + 1, fim);
+            }
+        }
+
+        private int Particionar(Byte[] vetor, int pivo, int fim)
+        {
+            int j = fim;
+
+            // Joga tudo que é maior que o pivô á direito e tudo que é menor a esquerda
+            for (int i = pivo + 1; i <= j;)
+            {
+                if (vetor[i] < vetor[pivo])
+                {
+                    i++;
+                }
+                else
+                {
+                    if (vetor[j] > vetor[pivo])
+                    {
+                        j--;
+                    }
+                    else
+                    {
+                        Swap(vetor, i, j);
+                        i++;
+                        j--;
+                    }
+                }
+            }
+
+            // Joga o pivô para o meio
+            Swap(vetor, pivo, j);
+            return j;
         }
     }
 }
