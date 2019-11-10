@@ -13,10 +13,11 @@ namespace Sort
     {
         static void Main(string[] args)
         {
+            Excel excel = new Excel();
             Vetor GerenciadorVetor = new Vetor();                                    
             var vetores = GerenciadorVetor.PopularVetor();
 
-            SortProcessador sp = new SortProcessador();
+            SortProcessador sortControle = new SortProcessador();
 
             // Percorre cada item da List
             foreach (var ItemLista in vetores)
@@ -24,11 +25,15 @@ namespace Sort
                 // Percorre as propriedades dos objetos Arrays da List
                 foreach (PropertyInfo atributo in ItemLista.GetType().GetProperties())
                 {
-                    sp.ObterTempoSort(atributo, ItemLista);                                        
+                    sortControle.ObterTempoSort(atributo, ItemLista);                                        
                 }
             }
 
-            sp.CalcularMediaTempoQuery();
+            // Calcula a média de tempo dos sorties, adiciona em um Vetor e retorna
+            var tempoMediaVetor = sortControle.CalcularMediaTempoQuery();
+
+            // Criar o excel, popula com as médias e gera os gráficos
+            excel.GerarExcel(tempoMediaVetor);
 
             Console.WriteLine("Programa Executado com Sucesso !");
             Console.ReadKey();

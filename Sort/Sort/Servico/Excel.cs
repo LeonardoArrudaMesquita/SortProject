@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sort.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -17,7 +18,7 @@ namespace Sort.Servico
         Ex._Worksheet oSheet;
         Ex._Worksheet oSheetChart;
 
-        public void GerarExcel()
+        public void GerarExcel(DadosExec[] tempoMediaVetor)
         {
             // Pega a pasta Raiz e concatena com o arquivo .xlsx
             String excelPath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, "Excel\\APS.xlsx");
@@ -73,6 +74,9 @@ namespace Sort.Servico
                 Ex.Borders borda = planilha.Borders;
                 borda.LineStyle = Ex.XlLineStyle.xlContinuous;
 
+                //// Popula a planilha com as médias
+                this.PopularPlanilha(tempoMediaVetor);
+
                 // Cria uma nova planilha
                 oSheetChart = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
                 oSheetChart.Name = "Gráfico";
@@ -89,17 +93,25 @@ namespace Sort.Servico
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR: " + ex.Message);
-                oBook.Close(true, excelPath, null);
+                Console.WriteLine("ERROR: " + ex.Message);                
             }
         }
 
-        public void PopularPlanilha()
+        private void PopularPlanilha(DadosExec[] tempoMediaLista)
         {
-                        
+            int cont = 0;
+
+            for (int i = 2; i <= 7; i++)
+            {
+                for (int j = 2; j <= 10 ; j++)
+                {
+                    oApp.Cells[i, j] = tempoMediaLista[cont].TempoExec;
+                    cont++;
+                }
+            }                             
         }
 
-        public void GerarGraficoExcel(String c1, String c2, String tamanho, double left, double top, double width, double height)
+        private void GerarGraficoExcel(String c1, String c2, String tamanho, double left, double top, double width, double height)
         {
                        
             // Cria um Chart(Gráfico)

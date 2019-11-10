@@ -201,94 +201,114 @@ namespace Sort
             // Joga o pivô para o meio
             Swap(vetor, pivo, j);
             return j;
-        }    
-
-    public void CountSort(Byte[] vetor)
-    {
-        int maior = EncontrarMaior(vetor);
-
-        Byte[] vetorContador = new Byte[maior + 1];
-
-        // Soma +1 para a quantidade de elementos encontrados naquele index
-        for (int i = 0; i < vetor.Length; i++)
-        {
-            vetorContador[vetor[i]] += 1;
         }
 
-        // Pecorre o Vetor Contador
-        for (int i = 0, indiceAux = 0; i < vetorContador.Length; i++)
+        public void CountSort(Byte[] vetor)
         {
-            // Laço para inserção de elemento em vetor de saida de acordo com quantidade de vezes que o elemento aparece
-            while (vetorContador[i] > 0)
+            int maior = EncontrarMaior(vetor);
+
+            Byte[] vetorContador = new Byte[maior + 1];
+
+            // Soma +1 para a quantidade de elementos encontrados naquele index
+            for (int i = 0; i < vetor.Length; i++)
             {
-                // Adiciona o elemento de forma ordenada no vetor
-                vetor[indiceAux] = (Byte)i;
-                indiceAux++;
-                vetorContador[i]--;
+                vetorContador[vetor[i]] += 1;
             }
-        }
-    }
 
-    private int EncontrarMaior(Byte[] vetor)
-    {
-        int maior = vetor[0];
-
-        for (int i = 1; i < vetor.Length; i++)
-        {
-            if (maior < vetor[i])
+            // Pecorre o Vetor Contador
+            for (int i = 0, indiceAux = 0; i < vetorContador.Length; i++)
             {
-                maior = vetor[i];
+                // Laço para inserção de elemento em vetor de saida de acordo com quantidade de vezes que o elemento aparece
+                while (vetorContador[i] > 0)
+                {
+                    // Adiciona o elemento de forma ordenada no vetor
+                    vetor[indiceAux] = (Byte)i;
+                    indiceAux++;
+                    vetorContador[i]--;
+                }
             }
         }
 
-        return maior;
-    }
-
-    public void BucketSort(Byte[] vetor)
-    {
-        int maior = EncontrarMaior(vetor);
-
-        List<int>[] auxiliar = new List<int>[vetor.Length];
-
-        // Cria o bucket em cada índice para armazenar os números
-        for (int i = 0; i < auxiliar.Length; i++)
+        private int EncontrarMaior(Byte[] vetor)
         {
-            auxiliar[i] = new List<int>(vetor.Length);
-        }
+            int maior = vetor[0];
 
-        int indice;
-
-        for (int i = 0; i < auxiliar.Length; i++)
-        {
-            indice = (vetor[i] * vetor.Length) / (maior + 1);
-
-            List<int> temporario = auxiliar[indice];
-            int contador = 0;
-
-            while (contador < temporario.Count && temporario.ElementAt(contador) < vetor[i])
+            for (int i = 1; i < vetor.Length; i++)
             {
-                contador++;
+                if (maior < vetor[i])
+                {
+                    maior = vetor[i];
+                }
             }
 
-            temporario.Insert(contador, vetor[i]);
+            return maior;
         }
 
-        indice = 0;
-
-        for (int i = 0; i < auxiliar.Length; i++)
+        public void BucketSort(Byte[] vetor)
         {
-            // Any() verifica se tem algum registro na lista (isEmpty)
-            while (auxiliar[i].Any())
+            int maior = EncontrarMaior(vetor);
+
+            List<int>[] auxiliar = new List<int>[vetor.Length];
+
+            // Cria o bucket em cada índice para armazenar os números
+            for (int i = 0; i < auxiliar.Length; i++)
             {
-                vetor[indice++] = (Byte)auxiliar[i].ElementAt(0);
-                auxiliar[i].RemoveAt(0);
+                auxiliar[i] = new List<int>(vetor.Length);
+            }
+
+            int indice;
+
+            for (int i = 0; i < auxiliar.Length; i++)
+            {
+                indice = (vetor[i] * vetor.Length) / (maior + 1);
+
+                List<int> temporario = auxiliar[indice];
+                int contador = 0;
+
+                while (contador < temporario.Count && temporario.ElementAt(contador) < vetor[i])
+                {
+                    contador++;
+                }
+
+                temporario.Insert(contador, vetor[i]);
+            }
+
+            indice = 0;
+
+            for (int i = 0; i < auxiliar.Length; i++)
+            {
+                // Any() verifica se tem algum registro na lista (isEmpty)
+                while (auxiliar[i].Any())
+                {
+                    vetor[indice++] = (Byte)auxiliar[i].ElementAt(0);
+                    auxiliar[i].RemoveAt(0);
+                }
+            }
+        }
+
+        public void RadixSort(Byte[] vetor)
+        {
+            int i, j;
+            int[] temporario = new int[vetor.Length];
+
+            for (int shift = 31; shift > -1; --shift)
+            {
+                j = 0;
+                for (i = 0; i < vetor.Length; ++i)
+                {
+                    bool move = (vetor[i] << shift) >= 0;
+                    if (shift == 0 ? !move : move) // shift the 0's to old's head
+                    {
+                        vetor[i - j] = vetor[i];
+                    }
+                    else // move the 1's to tmp
+                    {
+                        temporario[j++] = vetor[i];
+                    }                    
+                }
+                
+                //temporario.CopyTo(vetor, vetor.Length - j);
             }
         }
     }
-
-    public void RadixSort(Byte[] vetor)
-    {
-
-    }
-}
 }

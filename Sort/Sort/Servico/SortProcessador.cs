@@ -29,7 +29,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Bubble,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));           
 
@@ -43,7 +43,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Selection,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -56,7 +56,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Insertion,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -69,7 +69,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Merge,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -82,7 +82,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Heap,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -95,7 +95,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Quick,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -108,7 +108,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Count,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -121,7 +121,7 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Bucket,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
@@ -134,14 +134,18 @@ namespace Sort.Servico
             DadosExecList.Add(
                     new DadosExec(
                             SortEnum.Radix,
-                            (vetor.Length < 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
+                            (vetor.Length <= 1000) ? tempo.Elapsed.TotalMilliseconds * 1e6 : tempo.Elapsed.TotalMilliseconds,
                             vetor.Length
                         ));
             tempo.Reset();
         }
 
-        public void CalcularMediaTempoQuery()
+        public DadosExec[] CalcularMediaTempoQuery()
         {
+            List<DadosExec> tempoMediaLista = new List<DadosExec>();
+            DadosExec[] tempoMediaVetor = new DadosExec[54];
+
+            int cont = 0;
             int[] TamanhosVetoresAux = { 5, 10, 50, 100, 1000, 10000 };
             SortEnum[] NomesVetoresAux = {
                                 SortEnum.Bubble,
@@ -161,8 +165,14 @@ namespace Sort.Servico
                     var media = (from values in DadosExecList
                                  where values.Tamanho == tamanho && values.NomeSort == nome
                                  select values.TempoExec).Sum() / 50;
+
+                    tempoMediaVetor[cont] = new DadosExec(nome, media, tamanho);
+
+                    cont++;
                 }
-            }            
+            }
+
+            return tempoMediaVetor;
         }
     }
 }
