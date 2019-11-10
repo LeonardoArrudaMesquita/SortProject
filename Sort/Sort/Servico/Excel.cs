@@ -81,12 +81,12 @@ namespace Sort.Servico
                 oSheetChart = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
                 oSheetChart.Name = "Gráfico";
 
-                GerarGraficoExcel("B2", "J2", "5", 10, 30, 300, 300); // Tam. 5
-                GerarGraficoExcel("B3", "J3", "10", 320, 30, 300, 300); // Tam. 10
-                GerarGraficoExcel("B4", "J4", "50", 630, 30, 300, 300); // Tam. 50
-                GerarGraficoExcel("B5", "J5", "100", 10, 340, 300, 300); // Tam. 100
-                GerarGraficoExcel("B6", "J6", "1000", 320, 340, 300, 300); // Tam. 1000
-                GerarGraficoExcel("B7", "J7", "10000", 630, 340, 300, 300); // Tam. 10000
+                GerarGraficoExcel("B2", "J2", 5, 10, 30, 300, 300); // Tam. 5
+                GerarGraficoExcel("B3", "J3", 10, 320, 30, 300, 300); // Tam. 10
+                GerarGraficoExcel("B4", "J4", 50, 630, 30, 300, 300); // Tam. 50
+                GerarGraficoExcel("B5", "J5", 100, 10, 340, 300, 300); // Tam. 100
+                GerarGraficoExcel("B6", "J6", 1000, 320, 340, 300, 300); // Tam. 1000
+                GerarGraficoExcel("B7", "J7", 10000, 630, 340, 300, 300); // Tam. 10000
 
                 // Fechando e salvando o arquivo
                 oBook.Close(true, excelPath, null);
@@ -111,7 +111,7 @@ namespace Sort.Servico
             }                             
         }
 
-        private void GerarGraficoExcel(String c1, String c2, String tamanho, double left, double top, double width, double height)
+        private void GerarGraficoExcel(String c1, String c2, int tamanho, double left, double top, double width, double height)
         {
                        
             // Cria um Chart(Gráfico)
@@ -123,7 +123,7 @@ namespace Sort.Servico
             
             // Seta o título do gráfico
             cp.HasTitle = true;
-            cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tamanho;
+            cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tamanho + " EM " + (tamanho <= 1000 ? "NANO" : "MILLI");
 
             // Seta os nomes das colunas
             Ex.SeriesCollection seriesCollection = cp.SeriesCollection();
@@ -133,7 +133,7 @@ namespace Sort.Servico
             series.XValues = oSheet.get_Range("B1", "J1");
 
             // Popula o Gráfico
-            cp.SetSourceData(valores, Ex.XlRowCol.xlRows);
+            //cp.SetSourceData(valores, Ex.XlRowCol.xlRows);
         }
     }
 }
