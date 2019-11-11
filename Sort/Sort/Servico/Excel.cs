@@ -64,11 +64,7 @@ namespace Sort.Servico
                 // Estilizando a fonte
                 planilha.Font.Name = "Arial";
                 headSort.Font.Bold = true;
-                headArray.Font.Bold = true;
-
-                // Auto preenchendo o width das colunas e das linhas
-                planilha.EntireColumn.AutoFit();
-                planilha.EntireRow.AutoFit();
+                headArray.Font.Bold = true;                
 
                 // Estilizando a borda
                 Ex.Borders borda = planilha.Borders;
@@ -76,6 +72,10 @@ namespace Sort.Servico
 
                 //// Popula a planilha com as médias
                 this.PopularPlanilha(tempoMediaVetor);
+
+                // Auto preenchendo o width das colunas e das linhas
+                planilha.EntireColumn.AutoFit();
+                planilha.EntireRow.AutoFit();
 
                 // Cria uma nova planilha
                 oSheetChart = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
@@ -124,6 +124,7 @@ namespace Sort.Servico
             // Seta o título do gráfico
             cp.HasTitle = true;
             cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tamanho + " EM " + (tamanho <= 1000 ? "NANO" : "MILLI");
+            cp.ChartTitle.Font.Name = "Arial";
 
             // Seta os nomes das colunas
             Ex.SeriesCollection seriesCollection = cp.SeriesCollection();
@@ -132,8 +133,8 @@ namespace Sort.Servico
             series.Values = valores;
             series.XValues = oSheet.get_Range("B1", "J1");
 
-            // Popula o Gráfico
-            //cp.SetSourceData(valores, Ex.XlRowCol.xlRows);
+            // Oculta a legenda da serie
+            cp.Legend.Clear();                        
         }
     }
 }

@@ -246,68 +246,108 @@ namespace Sort
 
         public void BucketSort(Byte[] vetor)
         {
-            int maior = EncontrarMaior(vetor);
+            
+            //Verify input
+            if (vetor == null || vetor.Length == 0)
+                return;
 
-            List<int>[] auxiliar = new List<int>[vetor.Length];
+            //Find the maximum and minimum values in the array
+            int maxValue = vetor[0]; //start with first element
+            int minValue = vetor[0];
 
-            // Cria o bucket em cada índice para armazenar os números
-            for (int i = 0; i < auxiliar.Length; i++)
+            //Note: start from index 1
+            for (int i = 1; i < vetor.Length; i++)
             {
-                auxiliar[i] = new List<int>(vetor.Length);
+                if (vetor[i] > maxValue)
+                    maxValue = vetor[i];
+
+                if (vetor[i] < minValue)
+                    minValue = vetor[i];
             }
 
-            int indice;
+            //Create a temporary "bucket" to store the values in order
+            //each value will be stored in its corresponding index
+            //scooting everything over to the left as much as possible (minValue)
+            //e.g. 34 => index at 34 - minValue
+            List<int>[] bucket = new List<int>[maxValue - minValue + 1];
 
-            for (int i = 0; i < auxiliar.Length; i++)
+            //Initialize the bucket
+            for (int i = 0; i < bucket.Length; i++)
             {
-                indice = (vetor[i] * vetor.Length) / (maior + 1);
-
-                List<int> temporario = auxiliar[indice];
-                int contador = 0;
-
-                while (contador < temporario.Count && temporario.ElementAt(contador) < vetor[i])
-                {
-                    contador++;
-                }
-
-                temporario.Insert(contador, vetor[i]);
+                bucket[i] = new List<int>();
             }
 
-            indice = 0;
-
-            for (int i = 0; i < auxiliar.Length; i++)
+            //Move items to bucket
+            for (int i = 0; i < vetor.Length; i++)
             {
-                // Any() verifica se tem algum registro na lista (isEmpty)
-                while (auxiliar[i].Any())
+                bucket[vetor[i] - minValue].Add(vetor[i]);
+            }
+
+            //Move items in the bucket back to the original array in order
+            int k = 0; //index for original array
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                if (bucket[i].Count > 0)
                 {
-                    vetor[indice++] = (Byte)auxiliar[i].ElementAt(0);
-                    auxiliar[i].RemoveAt(0);
+                    for (int j = 0; j < bucket[i].Count; j++)
+                    {
+                        vetor[k] = (Byte)bucket[i][j];
+                        k++;
+                    }
                 }
             }
         }
 
         public void RadixSort(Byte[] vetor)
         {
-            int i, j;
-            int[] temporario = new int[vetor.Length];
-
-            for (int shift = 31; shift > -1; --shift)
+            int max = EncontrarMaior(vetor);
+            for (int exp = 1; max / exp > 0; exp *= 10)
             {
-                j = 0;
-                for (i = 0; i < vetor.Length; ++i)
-                {
-                    bool move = (vetor[i] << shift) >= 0;
-                    if (shift == 0 ? !move : move) // shift the 0's to old's head
-                    {
-                        vetor[i - j] = vetor[i];
-                    }
-                    else // move the 1's to tmp
-                    {
-                        temporario[j++] = vetor[i];
-                    }                    
-                }
-                
-                //temporario.CopyTo(vetor, vetor.Length - j);
+                CountingSort(vetor, vetor.Length, exp);
+            }
+        }
+
+        //This is a modified version of Counting Sort from an earlier post
+        //We need to do Counting Sort against each group of integers,
+        //where the groups are made based on the position of significant digits.
+        //So, we use Counting Sort on the least-significant digit, then the next-least, etc.
+        //After that, we concatenate the groups together to form the final array.
+        private static void CountingSort(Byte[] array, int length, int exponent)
+        {
+            //Create a new "output" array
+            int[] output = new int[length]; // output array  
+            int i;
+
+            //Create a new "counting" array which stores the count of each unique number
+            int[] count = new int[10];
+            for (i = 0; i < 10; i++)
+            {
+                count[i] = 0;
+            }
+            for (i = 0; i < length; i++)
+            {
+                count[(array[i] / exponent) % 10]++;
+            }
+
+            //Change count[i] so that count[i] now contains actual position of  
+            //this character in the output array.
+            for (i = 1; i < 10; i++)
+            {
+                count[i] += count[i - 1];
+            }
+
+            //Build the output array.
+            //This is the tricky part.
+            for (i = length - 1; i >= 0; i--)
+            {
+                output[count[(array[i] / exponent) % 10] - 1] = array[i];
+                count[(array[i] / exponent) % 10]--;
+            }
+
+            //Copy the output array to the final array.
+            for (i = 0; i < length; i++)
+            {
+                array[i] = (Byte)output[i];
             }
         }
     }
