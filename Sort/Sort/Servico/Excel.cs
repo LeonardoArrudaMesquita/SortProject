@@ -64,11 +64,7 @@ namespace Sort.Servico
                 // Estilizando a fonte
                 planilha.Font.Name = "Arial";
                 headSort.Font.Bold = true;
-                headArray.Font.Bold = true;
-
-                // Auto preenchendo o width das colunas e das linhas
-                planilha.EntireColumn.AutoFit();
-                planilha.EntireRow.AutoFit();
+                headArray.Font.Bold = true;                
 
                 // Estilizando a borda
                 Ex.Borders borda = planilha.Borders;
@@ -76,6 +72,10 @@ namespace Sort.Servico
 
                 //// Popula a planilha com as médias
                 this.PopularPlanilha(tempoMediaVetor);
+
+                // Auto preenchendo o width das colunas e das linhas
+                planilha.EntireColumn.AutoFit();
+                planilha.EntireRow.AutoFit();
 
                 // Cria uma nova planilha
                 oSheetChart = (Microsoft.Office.Interop.Excel.Worksheet)oBook.Worksheets.Add();
@@ -119,21 +119,80 @@ namespace Sort.Servico
             Ex.ChartObject cbc = (Ex.ChartObject)cb.Add(left, top, width, height);
             Ex.Chart cp = cbc.Chart;
 
-            Ex.Range valores = oSheet.get_Range(c1, c2);
-            
-            // Seta o título do gráfico
+            Ex.Range bubbleValores = oSheet.get_Range(c1, c2);
+            Ex.Range selectionValores = oSheet.get_Range("B3", "B3");
+            Ex.Range insertionValores = oSheet.get_Range("C3", "C3");
+            Ex.Range heapValores = oSheet.get_Range("C3", "C3");
+            Ex.Range mergeValores = oSheet.get_Range("C3", "C3");
+            Ex.Range quickValores = oSheet.get_Range("C3", "C3");
+            Ex.Range countValores = oSheet.get_Range("C3", "C3");
+            Ex.Range bucketValores = oSheet.get_Range("C3", "C3");
+            Ex.Range radixValores = oSheet.get_Range("C3", "C3");
+
+            // Seta o título do gráfico e o formata
             cp.HasTitle = true;
             cp.ChartTitle.Text = "MÉDIA DE TEMPO EM VETORES DE TAMANHO " + tamanho + " EM " + (tamanho <= 1000 ? "NANO" : "MILLI");
+            cp.ChartTitle.Font.Name = "Arial";
 
             // Seta os nomes das colunas
-            Ex.SeriesCollection seriesCollection = cp.SeriesCollection();
-            Ex.Series series = seriesCollection.NewSeries();
+            Ex.SeriesCollection seriesCollectionBubble = cp.SeriesCollection();
+            Ex.Series bubbleSeries = seriesCollectionBubble.NewSeries();
 
-            series.Values = valores;
-            series.XValues = oSheet.get_Range("B1", "J1");
+            Ex.SeriesCollection seriesCollectionSelection = cp.SeriesCollection();
+            Ex.Series selectionSeries = seriesCollectionSelection.NewSeries();
 
-            // Popula o Gráfico
-            //cp.SetSourceData(valores, Ex.XlRowCol.xlRows);
+            Ex.SeriesCollection seriesCollectionInsertion = cp.SeriesCollection();
+            Ex.Series insertionSeries = seriesCollectionInsertion.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionHeap = cp.SeriesCollection();
+            Ex.Series heapSeries = seriesCollectionHeap.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionMerge = cp.SeriesCollection();
+            Ex.Series mergeSeries = seriesCollectionMerge.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionQuick = cp.SeriesCollection();
+            Ex.Series quickSeries = seriesCollectionQuick.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionCount = cp.SeriesCollection();
+            Ex.Series countSeries = seriesCollectionCount.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionBucket = cp.SeriesCollection();
+            Ex.Series bucketSeries = seriesCollectionBucket.NewSeries();
+
+            Ex.SeriesCollection seriesCollectionRadix = cp.SeriesCollection();
+            Ex.Series radixSeries = seriesCollectionRadix.NewSeries();            
+
+            //series.Values = valores;
+            bubbleSeries.Name = "Bubble";
+            selectionSeries.Name = "Selection";
+            insertionSeries.Name = "Insertion";
+            heapSeries.Name = "Heap";
+            mergeSeries.Name = "Merge";
+            quickSeries.Name = "Quick";
+            countSeries.Name = "Count";
+            bucketSeries.Name = "Bucket";
+            radixSeries.Name = "Radix";
+
+            //series2.Values = valores2;
+            bubbleSeries.Values = bubbleValores;
+            selectionSeries.Values = selectionValores;
+            insertionSeries.Values = insertionValores;
+            heapSeries.Values = heapValores;
+            mergeSeries.Values = mergeValores;
+            quickSeries.Values = quickValores;
+            countSeries.Values = countValores;
+            bucketSeries.Values = bucketValores;
+            radixSeries.Values = radixValores;
+
+            bubbleSeries.XValues = oSheet.get_Range("B1", "B1");
+            selectionSeries.XValues = oSheet.get_Range("B2", "B2");
+            insertionSeries.XValues = oSheet.get_Range("B3", "B3");
+            heapSeries.XValues = oSheet.get_Range("B4", "B4");
+            mergeSeries.XValues = oSheet.get_Range("B5", "B5");
+            quickSeries.XValues = oSheet.get_Range("B6", "B6");
+            countSeries.XValues = oSheet.get_Range("B8", "B8");
+            bucketSeries.XValues = oSheet.get_Range("B9", "B9");
+            radixSeries.XValues = oSheet.get_Range("B10", "B10");
         }
     }
 }
