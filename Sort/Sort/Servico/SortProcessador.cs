@@ -15,6 +15,7 @@ namespace Sort.Servico
         Vetor GerenciadorVetor = new Vetor();
         Stopwatch tempo = new Stopwatch();
         Sorties sort = new Sorties();
+        Byte[] vetorCopia;
 
         public void ObterTempoSort(PropertyInfo atributo, Arrays ItemLista)
         {                        
@@ -22,8 +23,9 @@ namespace Sort.Servico
 
             // BUBBLE SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.BubbleSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.BubbleSort(vetorCopia);
             tempo.Stop();
 
             DadosExecList.Add(
@@ -37,8 +39,9 @@ namespace Sort.Servico
 
             // SELECTION SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.SelectionSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.SelectionSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -50,8 +53,9 @@ namespace Sort.Servico
 
             // INSERTION SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.InsertionSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.InsertionSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -63,8 +67,9 @@ namespace Sort.Servico
 
             // MERGE SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.MergeSort(GerenciadorVetor.CopiarVetor(vetor), 0, vetor.Length - 1);
+            sort.MergeSort(vetorCopia, 0, vetorCopia.Length - 1);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -76,8 +81,9 @@ namespace Sort.Servico
 
             // HEAP SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.HeapSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.HeapSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -89,8 +95,9 @@ namespace Sort.Servico
 
             // QUICK SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.QuickSort(GerenciadorVetor.CopiarVetor(vetor), 0, vetor.Length - 1);
+            sort.QuickSort(vetorCopia, 0, vetorCopia.Length - 1);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -102,8 +109,9 @@ namespace Sort.Servico
 
             // COUNT SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.CountSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.CountSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -115,8 +123,9 @@ namespace Sort.Servico
 
             // BUCKET SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.BucketSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.BucketSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
@@ -128,8 +137,9 @@ namespace Sort.Servico
 
             // RADIX SORT
 
+            vetorCopia = GerenciadorVetor.CopiarVetor(vetor);
             tempo.Start();
-            sort.RadixSort(GerenciadorVetor.CopiarVetor(vetor));
+            sort.RadixSort(vetorCopia);
             tempo.Stop();
             DadosExecList.Add(
                     new DadosExec(
